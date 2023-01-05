@@ -18,6 +18,12 @@
       .column:last-child {
         background-color: #ddd;
       }
+	  
+	  .column > div:nth-child(1),
+	  .column > div:nth-child(3) {
+		filter: sepia(100%) saturate(300%) brightness(70%) hue-rotate(180deg);
+		}
+	  
       .symbol {
         font-size: 32px;
         text-align: center;
