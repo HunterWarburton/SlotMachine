@@ -47,11 +47,14 @@
         return slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
       }
 
+	const symbolsList = [];
+
       const createColumn = () => {
         const column = document.createElement('div');
         column.classList.add('column');
         for (let i = 0; i < 10; i++) {
           const symbol = document.createElement('div');
+		  symbolsList.push(symbol);
           symbol.innerHTML = getRandomSymbol();
           symbol.classList.add('symbol');
           column.appendChild(symbol);
@@ -71,7 +74,11 @@
       document.body.appendChild(createSlotMachine());
       
       const playButton = document.getElementById('play-button');
+	  
+	  
+	  //CLICK THE BUTTON
 playButton.addEventListener('click', () => {
+	symbolsList.length = [];
   const slotMachine = document.querySelector('.slot-machine');
   slotMachine.innerHTML = '';
   for (let i = 0; i < 5; i++) {
@@ -82,8 +89,13 @@ playButton.addEventListener('click', () => {
     symbols.forEach(symbol => symbol.style.transform = 'none');
   }, 001);
 
+		const symbols = [];
+		for (let i = 0; i < symbolsList.length; i += 5) {
+			symbols.push(symbolsList.slice(i, i + 5));
+		}
+		drawLines(symbols);
 		checkThreeOfAKind();
-	});
+});
 	
 	const checkThreeOfAKind = () => {
   const secondSymbols = document.querySelectorAll('.column > .symbol:nth-child(2)');
@@ -103,6 +115,50 @@ playButton.addEventListener('click', () => {
   symbolCount.innerHTML = text;
 }
 
+
+//DRAW LINES
+const container = document.createElement('div');
+container.setAttribute('id', 'container');
+document.body.appendChild(container);
+const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+svg.setAttribute('width', '100');
+svg.setAttribute('height', '100');
+container.appendChild(svg);
+
+
+const drawLines = (symbols) => {
+  const container = document.querySelector('#container');
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '100');
+  svg.setAttribute('height', '100');
+  container.appendChild(svg);
+  const firstSymbol = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  firstSymbol.setAttribute('cx', '50');
+  firstSymbol.setAttribute('cy', '50');
+  firstSymbol.setAttribute('r', '40');
+  svg.appendChild(firstSymbol);
+  const point1 = svg.createSVGPoint();
+  point1.x = 0;//firstSymbol.offsetLeft;
+  point1.y = 0;//firstSymbol.offsetTop;
+  const ctm1 = firstSymbol.getScreenCTM();
+  const transformedPoint1 = point1.matrixTransform(ctm1.inverse());
+  for (let i = 1; i < symbols.length; i++) {
+    const column = symbols[i];
+    for (let j = 0; j < 3; j++) {
+      const symbol = column[j];
+      if (symbol.textContent === firstSymbol.textContent) {
+        const point2 = svg.createSVGPoint();
+        point2.x = 0;//symbol.offsetLeft;
+        point2.y = 0;//symbol.offsetTop;
+        const ctm2 = symbol.getScreenCTM();
+        const transformedPoint2 = point2.matrixTransform(ctm2.inverse());
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M${transformedPoint1.x} ${transformedPoint1.y} L${transformedPoint2.x} ${transformedPoint2.y}`);
+        svg.appendChild(path);
+      }
+    }
+  }
+};
 
 
 
