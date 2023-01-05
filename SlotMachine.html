@@ -6,10 +6,17 @@
       /* add your CSS styles here */
       .slot-machine {
         display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .column {
         display: flex;
         flex-direction: column;
+        border: 1px solid black;
+      }
+      .column:first-child,
+      .column:last-child {
+        background-color: #ddd;
       }
       .symbol {
         font-size: 32px;
