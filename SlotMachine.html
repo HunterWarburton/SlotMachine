@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Slot Machine</title>
+    <style>
+      /* add your CSS styles here */
+      .slot-machine {
+        display: flex;
+      }
+      .column {
+        display: flex;
+        flex-direction: column;
+      }
+      .symbol {
+        font-size: 32px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="play-button">Play</button>
+    <script>
+      // add your JavaScript code here
+      const slotSymbols = ['🍒', '💎', '🍊', '🍇', '🍒'];
+
+      const getRandomSymbol = () => {
+        return slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+      }
+
+      const createColumn = () => {
+        const column = document.createElement('div');
+        column.classList.add('column');
+        for (let i = 0; i < 3; i++) {
+          const symbol = document.createElement('div');
+          symbol.innerHTML = getRandomSymbol();
+          symbol.classList.add('symbol');
+          column.appendChild(symbol);
+        }
+        return column;
+      }
+
+      const createSlotMachine = () => {
+        const slotMachine = document.createElement('div');
+        slotMachine.classList.add('slot-machine');
+        for (let i = 0; i < 5; i++) {
+          slotMachine.appendChild(createColumn());
+        }
+        return slotMachine;
+      }
+
+      document.body.appendChild(createSlotMachine());
+      
+      const playButton = document.getElementById('play-button');
+playButton.addEventListener('click', () => {
+  const slotMachine = document.querySelector('.slot-machine');
+  slotMachine.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    slotMachine.appendChild(createColumn());
+  }
+});
+      
+    </script>
+  </body>
+</html>
