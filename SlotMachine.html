@@ -11,8 +11,10 @@
       }
       .column {
         display: flex;
+		height: 12.5em;
         flex-direction: column;
         border: 1px solid black;
+		overflow: hidden;
       }
       .column:first-child,
       .column:last-child {
@@ -25,8 +27,13 @@
 		}
 	  
       .symbol {
-        font-size: 32px;
+		width: 2em;
+		height: 2em;
+        font-size: 3em;
         text-align: center;
+		/* animation */
+		transition: transform 1.0s cubic-bezier(.6,1.08,.83,1.16);
+		transform: translateY(-600%);
       }
     </style>
   </head>
@@ -43,7 +50,7 @@
       const createColumn = () => {
         const column = document.createElement('div');
         column.classList.add('column');
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 10; i++) {
           const symbol = document.createElement('div');
           symbol.innerHTML = getRandomSymbol();
           symbol.classList.add('symbol');
@@ -64,13 +71,17 @@
       document.body.appendChild(createSlotMachine());
       
       const playButton = document.getElementById('play-button');
-	playButton.addEventListener('click', () => {
-		const slotMachine = document.querySelector('.slot-machine');
-		slotMachine.innerHTML = '';
-		for (let i = 0; i < 5; i++) {
-			slotMachine.appendChild(createColumn());
-		}
-		
+playButton.addEventListener('click', () => {
+  const slotMachine = document.querySelector('.slot-machine');
+  slotMachine.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    slotMachine.appendChild(createColumn());
+  }
+  setTimeout(() => {
+    const symbols = document.querySelectorAll('.symbol');
+    symbols.forEach(symbol => symbol.style.transform = 'none');
+  }, 001);
+
 		checkThreeOfAKind();
 	});
 	
@@ -84,19 +95,22 @@
       counts[symbol.innerHTML] = 1;
     }
   }
-  const message = document.createElement('div');
-  if (Object.values(counts).includes(3)) {
-    message.innerHTML = 'You have three of a kind!';
-  } else {
-    message.innerHTML = 'You do not have three of a kind.';
+  const symbolCount = document.querySelector('.symbol-count');
+  let text = '';
+  for (const [symbol, count] of Object.entries(counts)) {
+    text += `${symbol}: ${count} `;
   }
-  document.body.appendChild(message);
-  // or use alert('You have three of a kind!'); or alert('You do not have three of a kind.');
+  symbolCount.innerHTML = text;
 }
+
+
 
 
 
       
     </script>
+	<div class="scrollable">
+  <div class="symbol-count"></div>
+</div>
   </body>
 </html>
