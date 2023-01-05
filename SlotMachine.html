@@ -64,13 +64,38 @@
       document.body.appendChild(createSlotMachine());
       
       const playButton = document.getElementById('play-button');
-playButton.addEventListener('click', () => {
-  const slotMachine = document.querySelector('.slot-machine');
-  slotMachine.innerHTML = '';
-  for (let i = 0; i < 5; i++) {
-    slotMachine.appendChild(createColumn());
+	playButton.addEventListener('click', () => {
+		const slotMachine = document.querySelector('.slot-machine');
+		slotMachine.innerHTML = '';
+		for (let i = 0; i < 5; i++) {
+			slotMachine.appendChild(createColumn());
+		}
+		
+		checkThreeOfAKind();
+	});
+	
+	const checkThreeOfAKind = () => {
+  const secondSymbols = document.querySelectorAll('.column > .symbol:nth-child(2)');
+  const counts = {};
+  for (const symbol of secondSymbols) {
+    if (counts[symbol.innerHTML]) {
+      counts[symbol.innerHTML]++;
+    } else {
+      counts[symbol.innerHTML] = 1;
+    }
   }
-});
+  const message = document.createElement('div');
+  if (Object.values(counts).includes(3)) {
+    message.innerHTML = 'You have three of a kind!';
+  } else {
+    message.innerHTML = 'You do not have three of a kind.';
+  }
+  document.body.appendChild(message);
+  // or use alert('You have three of a kind!'); or alert('You do not have three of a kind.');
+}
+
+
+
       
     </script>
   </body>
