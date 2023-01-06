@@ -53,14 +53,30 @@
 		}
 	  
       .symbol {
+		visibility: hidden;
 		width: 2em;
-		height: 2em;
-        font-size: 3em;
+		height: 3em;
+        font-size: 3.4em;
         text-align: center;
+		
+		
+		position: relative
+		
 		/* animation */
 		/*transition: transform 3.0s cubic-bezier(.76,1.24,.95,1.04);*/
 		transform: translateY(-1800%);
       }
+	  img {
+	  visibility: visible;
+	  position: relative;
+	 
+		width: 1em;
+		height: 1em;
+		/*top:-100%;*/
+		left:0px;
+		
+	  }
+	  
     </style>
   </head>
   <body>
@@ -78,7 +94,7 @@
 	
     <script>
       // add your JavaScript code here
-      const slotSymbols = ['🍒', '💎', '🍊', '🍇', '🍒'];
+      const slotSymbols = ['D', 'S', 'M', 'B', 'W'];
 
       const getRandomSymbol = () => {
         return slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
@@ -96,8 +112,15 @@
         for (let i = 0; i < 30+(time*2); i++) {
           const symbol = document.createElement('div');
 		  symbolsList.push(symbol);
-          symbol.innerHTML = getRandomSymbol();
+          symbol.id = getRandomSymbol();
           symbol.classList.add('symbol');
+		  
+		  //Slap an image on that symbol
+		  const img = document.createElement('img');
+			img.src = `images/${symbol.id}.png`;
+			img.classList.add('slot-img');
+			symbol.appendChild(img);
+		  
 		  //console.log(time);
 		  //Make the animation of each column's symbol progressively slower
 		  symbol.style.transition = `transform ${time}s cubic-bezier(.76,1.24,.95,1.04)`;
@@ -162,7 +185,7 @@ playButton.addEventListener('click', () => {
 	
 	
 	const checkThreeOfAKind = () => {
-  const secondSymbols = document.querySelectorAll('.column > .symbol:nth-child(2)');
+  const secondSymbols = document.querySelectorAll('.column > .symbol:nth-child(3)');
   const counts = {};
   for (const symbol of secondSymbols) {
     if (counts[symbol.innerHTML]) {
@@ -172,9 +195,9 @@ playButton.addEventListener('click', () => {
     }
   }
   const symbolCount = document.querySelector('.symbol-count');
-  let text = '';
+  let text = 'Middle Row -';
   for (const [symbol, count] of Object.entries(counts)) {
-    text += `${symbol}: ${count} `;
+    text += ` ${symbol}: ${count}`;
   }
   symbolCount.innerHTML = text;
 }
