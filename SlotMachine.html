@@ -3,6 +3,13 @@
   <head>
     <title>Slot Machine</title>
     <style>
+	
+	.slotHolder {
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
       /* add your CSS styles here */
       .slot-machine {
         display: flex;
@@ -12,6 +19,13 @@
 		width: 30em;
 		border: 0.5em solid black;
       }
+	  
+	  .play-button {
+	  font-size: 3em;
+        text-align: center;
+	  
+	  }
+	  
       .column {
         display: flex;
 		
@@ -32,8 +46,8 @@
         background-color: #ddd;
       }
 	  
-	  .column > div:nth-child(1),
-	  .column > div:nth-child(3) {
+	  .column > div:nth-child(2),
+	  .column > div:nth-child(4) {
 		/*filter: sepia(100%) saturate(300%) brightness(70%) hue-rotate(180deg);*/
 		
 		}
@@ -50,7 +64,18 @@
     </style>
   </head>
   <body>
-    <button id="play-button">Play</button>
+	<div class="slotHolder">
+		<button id="play-button">Click<br>to<br>play</button>
+	</div>
+	<div class="scrollable">
+		<div class="symbol-count"></div>
+	</div>
+	</body>
+  
+
+
+	
+	
     <script>
       // add your JavaScript code here
       const slotSymbols = ['🍒', '💎', '🍊', '🍇', '🍒'];
@@ -92,10 +117,11 @@
         return slotMachine;
       }
 
-      document.body.appendChild(createSlotMachine());
+	const slotHolder = document.querySelector('.slotHolder');
+      slotHolder.appendChild(createSlotMachine());
       
       const playButton = document.getElementById('play-button');
-	  
+	  playButton.classList.add('play-button');
 	  
 	  //CLICK THE BUTTON
 playButton.addEventListener('click', () => {
@@ -120,8 +146,8 @@ playButton.addEventListener('click', () => {
 	function topandBottomRowColor() {
 		const columns = document.querySelectorAll('.column');
 		columns.forEach(column => {
-			const firstChild = column.children[0];
-			const thirdChild = column.children[2];
+			const firstChild = column.children[1];
+			const thirdChild = column.children[3];
 			symbolsTopBottom.push(firstChild);
 			symbolsTopBottom.push(thirdChild);
 		});
@@ -160,8 +186,5 @@ playButton.addEventListener('click', () => {
 
       
     </script>
-	<div class="scrollable">
-  <div class="symbol-count"></div>
-</div>
-  </body>
+
 </html>
