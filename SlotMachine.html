@@ -8,7 +8,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-		height: 13.5em;
+		height: 13.6em;
 		width: 30em;
 		border: 0.5em solid black;
       }
@@ -44,7 +44,7 @@
         font-size: 3em;
         text-align: center;
 		/* animation */
-		transition: transform 3.0s cubic-bezier(.76,1.24,.95,1.04);
+		/*transition: transform 3.0s cubic-bezier(.76,1.24,.95,1.04);*/
 		transform: translateY(-1800%);
       }
     </style>
@@ -65,15 +65,20 @@
 
 
 		//make the symbols that make up a column
-      const createColumn = () => {
+      const createColumn = (time) => {
         const column = document.createElement('div');
         column.classList.add('column');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 30+(time*2); i++) {
           const symbol = document.createElement('div');
 		  symbolsList.push(symbol);
           symbol.innerHTML = getRandomSymbol();
           symbol.classList.add('symbol');
-          column.appendChild(symbol);
+		  //console.log(time);
+		  //Make the animation of each column's symbol progressively slower
+		  symbol.style.transition = `transform ${time}s cubic-bezier(.76,1.24,.95,1.04)`;
+          symbol.style.transform = `translateY(-${time*400+1800}%)`; 
+		  
+		  column.appendChild(symbol);
         }
         return column;
       }
@@ -82,7 +87,7 @@
         const slotMachine = document.createElement('div');
         slotMachine.classList.add('slot-machine');
         for (let i = 0; i < 5; i++) {
-          slotMachine.appendChild(createColumn());
+          slotMachine.appendChild(createColumn(i/2+1));
         }
         return slotMachine;
       }
@@ -98,7 +103,7 @@ playButton.addEventListener('click', () => {
   const slotMachine = document.querySelector('.slot-machine');
   slotMachine.innerHTML = '';
   for (let i = 0; i < 5; i++) {
-    slotMachine.appendChild(createColumn());
+    slotMachine.appendChild(createColumn(i/2+1));
   }
   
   //Animate symbols moving
