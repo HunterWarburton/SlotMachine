@@ -15,10 +15,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-		height: 73.5vh;
-		width: 75vh;
+		height: calc(75vh);
+		max-width: 100%;
+		/*width: 75vh;*/
 		border: 0.5em solid black;
-		min-width: 430px;
+		
 
 	}
 	  
@@ -31,16 +32,17 @@
 	  
       .column {
         display: flex;
-		width: 15vh;
-		min-width: 85px;
-		height: 87.5vh;
-		clip-path: inset(14.25vh 0px 0px 0px);
+		
+		width: 15%;
+		
+		height: 100%;
+		clip-path: inset(15% 0px 0px 0px);
 		
         flex-direction: column;
-        border: 1px solid black;
+        /*border: 1px solid black;*/
 		
 		/*border-top-width: 4.1em;*/
-		margin-top: -14.25vh;
+		margin-top: -15%;
 		
 		
 		overflow: hidden;
@@ -63,10 +65,10 @@
 				
 		position: relative
 		
-		/*width: 14vh;*/
-		min-width: 68px;
+		width: 14vw;
 		height: 14vh;
-		min-height: 92px;
+		/*min-width: 92px;
+		min-height: 92px;*/
 		/*top:-100%;*/
 		
 		
@@ -78,8 +80,10 @@
 	  visibility: visible;
 	  position: relative;
 		
-		max-width: 92px;
-		max-height: 92px;
+		/*max-width: 92px;
+		max-height: 92px;*/
+		width: 100%;
+		height: 100%;
 		left:0px;
 		
 	  }
