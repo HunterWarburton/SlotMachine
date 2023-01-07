@@ -15,28 +15,32 @@
         display: flex;
         justify-content: center;
         align-items: center;
-		height: 13.6em;
-		width: 30em;
+		height: 73.5vh;
+		width: 75vh;
 		border: 0.5em solid black;
-      }
+		min-width: 430px;
+
+	}
 	  
 	  .play-button {
-	  font-size: 3em;
+		width: 15vw;
+	  font-size: 6vw;
         text-align: center;
 	  
 	  }
 	  
       .column {
         display: flex;
-		
-		height: 16.5em;
-		clip-path: inset(4em 0px 0px 0px);
+		width: 15vh;
+		min-width: 85px;
+		height: 87.5vh;
+		clip-path: inset(14.25vh 0px 0px 0px);
 		
         flex-direction: column;
         border: 1px solid black;
 		
 		/*border-top-width: 4.1em;*/
-		margin-top: -5em;
+		margin-top: -14.25vh;
 		
 		
 		overflow: hidden;
@@ -54,13 +58,17 @@
 	  
       .symbol {
 		visibility: hidden;
-		width: 2em;
-		height: 3em;
-        font-size: 3.4em;
+	        
         text-align: center;
-		
-		
+				
 		position: relative
+		
+		/*width: 14vh;*/
+		min-width: 68px;
+		height: 14vh;
+		min-height: 92px;
+		/*top:-100%;*/
+		
 		
 		/* animation */
 		/*transition: transform 3.0s cubic-bezier(.76,1.24,.95,1.04);*/
@@ -69,10 +77,9 @@
 	  img {
 	  visibility: visible;
 	  position: relative;
-	 
-		width: 1em;
-		height: 1em;
-		/*top:-100%;*/
+		
+		max-width: 92px;
+		max-height: 92px;
 		left:0px;
 		
 	  }
@@ -94,7 +101,7 @@
 	
     <script>
       // add your JavaScript code here
-      const slotSymbols = ['D', 'S', 'M', 'B', 'W'];
+      const slotSymbols = ['A', 'D', 'G', 'T', 'H', 'K', 'L', 'M', '2', 'Y', 'U'];
 
       const getRandomSymbol = () => {
         return slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
@@ -146,6 +153,7 @@
       const playButton = document.getElementById('play-button');
 	  playButton.classList.add('play-button');
 	  
+	  
 	  //CLICK THE BUTTON
 playButton.addEventListener('click', () => {
 	symbolsList.length = [];
@@ -164,7 +172,10 @@ playButton.addEventListener('click', () => {
 		
 		topandBottomRowColor();
 		checkThreeOfAKind();
+		doTheConfetti();
 });
+//END BUTTON
+
 	
 	function topandBottomRowColor() {
 		const columns = document.querySelectorAll('.column');
@@ -202,6 +213,48 @@ playButton.addEventListener('click', () => {
   symbolCount.innerHTML = text;
 }
 
+	
+	function doTheConfetti() {
+		//Establish Confetti Zone
+		const canvas = document.createElement('canvas');
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		document.body.appendChild(canvas);
+		const ctx = canvas.getContext('2d');
+		const particles = [];
+		const particleCount = 200;
+		const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f'];
+		for (let i = 0; i < particleCount; i++) {
+			particles.push({
+				x: Math.random() * canvas.width,
+				y: Math.random() * canvas.height,
+				vx: Math.random() * 10 - 5,
+				vy: Math.random() * 10 - 5,
+				radius: Math.random() * 5 + 2,
+				color: colors[Math.floor(Math.random() * colors.length)],
+			});
+		}
+
+		function draw() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			particles.forEach(particle => {
+				particle.x += particle.vx;
+				particle.y += particle.vy;
+				if (particle.x < 0 || particle.x > canvas.width) particle.vx = -particle.vx;
+				if (particle.y < 0 || particle.y > canvas.height) particle.vy = -particle.vy;
+				ctx.beginPath();
+				ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+				ctx.fillStyle = particle.color;
+				ctx.fill();
+			});
+			requestAnimationFrame(draw);
+		}
+		draw();
+		setTimeout(() => {
+			clearInterval(interval);
+			document.body.removeChild(canvas);
+		}, 2000);
+	}
 
 
 
