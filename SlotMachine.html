@@ -10,7 +10,7 @@
 		display: flex;
 		justify-content: center;
 		
-		padding: 10px;
+		/*padding: 10px;*/
 		
 		border: 1px dashed;		
 	}
@@ -18,29 +18,33 @@
     .slot-machine {
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
 		width: 75%;
-		height: 100%;
+		height: calc(100% - 1em);
 		border: 0.5em solid black;
+		overflow: hidden;
 		
 	}
 	  
 	  .play-button {
 		width: 15%;
-	  font-size: 6vw;
+	  font-size: 100%;
         text-align: center;
 	  
 	  }
 	  
       .column {
-        display: fixed;
-		flex-direction: column;
-		width: 100%;
-		height: 100%;
-		
-		clip-path: inset(25% 0px 0px 0px);
+		position: relative;
         
-		margin-top: -25%;
+		flex-direction: column;
+		width: 18%;
+		height: 134%;
+		
+		clip-path: inset(8% 0px 0px 0px);
+		margin-top: -17%;
+		padding-top: 0%;
+		padding-left: 1%;
+		padding-right: 1%;
 		
 		overflow: hidden;
       }
@@ -62,8 +66,8 @@
 				
 		position: relative
 		
-		width: 25%;
-		height: 25%;
+		width: 0.9%;
+		height: 14.9%;
 
 		/*top:-100%;*/
 		
@@ -76,8 +80,8 @@
 	  visibility: visible;
 	  position: relative;
 		
-		/*max-width: 92px;
-		max-height: 92px;*/
+		max-width: 25vw;
+		max-height: 25vh;
 		width: 100%;
 		height: 100%;
 		left:0px;
@@ -122,15 +126,17 @@
 		var wHeight = Math.floor(window.innerHeight);
 		console.log("wWidth " + wWidth);
 		console.log("wHeight " + wHeight);
-		if (wWidth <= wHeight) {
+		//IF the width is smaller (cellphone)
+		//Then full width is controlling size
+		if (wWidth <= wHeight*1.2) {
 			console.log("tiny width");
-			slotHolder.style.width = wWidth *0.90 + 'px';
-			slotHolder.style.height = wWidth * 0.80 + 'px';
+			slotHolder.style.width = wWidth + 'px';
+			slotHolder.style.height = wWidth * 5/6 *0.8 + 'px';
 		} else {
 		console.log("its widescreen");
 			//If Height is smaller (pc screen) then use full 90% height and base width on that
-			slotHolder.style.height = wHeight * 0.90 + 'px';
-			slotHolder.style.width = wHeight / 0.80 + 'px';
+			slotHolder.style.height = wHeight * 0.8 + 'px';
+			slotHolder.style.width = wHeight * 6/5 + 'px';
 		}
     };
 
