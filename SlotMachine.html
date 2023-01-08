@@ -61,16 +61,12 @@
 	  
       .symbol {
 		visibility: hidden;
-	        
         text-align: center;
 				
-		position: relative
+		/*position: relative*/
 		
-		width: 0.9%;
+		width: 90.95%;
 		height: 14.9%;
-
-		/*top:-100%;*/
-		
 		
 		/* animation */
 		/*transition: transform 3.0s cubic-bezier(.76,1.24,.95,1.04);*/
@@ -104,11 +100,75 @@
 	
 	
     <script>
-      // add your JavaScript code here
-      const slotSymbols = ['A', 'D', 'G', 'T', 'H', 'K', 'L', 'M', '2', 'Y', 'U'];
+      
+	  //List of all possible symbols, based on single letters, is file name of images
+      const slotSymbols = ['A', 'D', 'G', 'T', 'H', 'K', 'L', 'M', '2', 'Y', 'U', 'R', 'O'];
 
+		//CODE TO GENERATE THE SPECIFIC SYMBOL everytime a reel is made
       const getRandomSymbol = () => {
-        return slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+	  //let theSymbol = 'O';
+	  /* OLD GENERATION, full random
+	  theSymbol = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+	  */
+	  //Generate a num between 1 and 100
+	  const Shmango =	15; //'O', 	15%
+	  const Bar =		10; //'R',  10%
+	  const Matcha =	8; //'M',  	8%
+	  const Ati =		10; //'A', 	10%
+	  const Draken =	7; //'D', 	7%
+	  const Gert =		7; //'G', 	7%
+	  const Hanako =	6; //'H', 	6%
+	  const Kyosha =	6; //'K', 	6% 69
+	  const Lyra =		7; //'L', 	7%
+	  const MatchaTwo =	6; //'2',	6%
+	  const Monty =		7; //'Y', 	7%
+	  const Urg =		7; //'U', 	7%
+	  const Taka =		4; //'T',	4%
+	  
+	  const num = Math.floor(Math.random() * 100) + 1;
+		switch (true) {
+		case num <= Shmango:
+			return 'O';
+		break;
+		case num <= Shmango+Bar:
+			return 'R';
+		break;
+		case num <= Shmango+Bar+Matcha:
+			return 'M';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati:
+			return 'A';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken:
+			return 'D';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken+Gert:
+			return 'G';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken+Gert+Hanako:
+			return 'H';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken+Gert+Hanako+Kyosha:
+			return 'K';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken+Gert+Hanako+Kyosha+Lyra:
+			return 'L';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken+Gert+Hanako+Kyosha+Lyra+MatchaTwo:
+			return '2';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken+Gert+Hanako+Kyosha+Lyra+MatchaTwo+Monty:
+			return 'Y';
+		break;
+		case num <= Shmango+Bar+Matcha+Ati+Draken+Gert+Hanako+Kyosha+Lyra+MatchaTwo+Monty+Urg:
+			return 'U';
+		break;
+		default:
+			return 'T';
+		}
+	  
+	  //returns a single letter
+        //return theSymbol;
       }
 
 	let symbols = [];
@@ -280,7 +340,7 @@
 		function addParticle() {
 		if (particleCount < 50) {
 			particles.push({
-				x: Math.random() * canvas.width,
+				x: playButton.offsetLeft,
 				y: Math.random() * canvas.height,
 				vx: Math.random() * 20 - 10,
 				vy: Math.random() * 20 - 10,
@@ -289,6 +349,7 @@
 				start: Date.now(),
 			});
 			particleCount++;
+			if (particleCount < 25) {addParticle();}
 		}
 		}
 
