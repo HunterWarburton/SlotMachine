@@ -40,7 +40,7 @@
 		width: 18%;
 		height: 134%;
 		
-		clip-path: inset(8% 0px 0px 0px);
+		clip-path: inset(8.1% 0px 0px 0px);
 		margin-top: -17%;
 		padding-top: 0%;
 		padding-left: 1%;
@@ -80,8 +80,8 @@
 	  visibility: visible;
 	  position: relative;
 		
-		max-width: 25vw;
-		max-height: 25vh;
+		max-width: 90px;
+		max-height: 90px;
 		width: 100%;
 		height: 100%;
 		left:0px;
@@ -242,7 +242,7 @@
     }
   }
   const symbolCount = document.querySelector('.symbol-count');
-  let text = 'Middle Row -';
+  let text = 'Second Row -';
   for (const [symbol, count] of Object.entries(counts)) {
     text += ` ${symbol}: ${count}`;
   }
@@ -251,16 +251,22 @@
 
 	
 	function doTheConfetti() {
+	
 		//Establish Confetti Zone
 		const canvas = document.createElement('canvas');
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
+		canvas.style.position = 'fixed';
+		canvas.style.top = 0;
+		canvas.style.left = 0;
+		canvas.style.zIndex = 100;
 		document.body.appendChild(canvas);
 		const ctx = canvas.getContext('2d');
 		const particles = [];
-		const particleCount = 200;
+		//const particleCount = 200;
 		const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f'];
-		for (let i = 0; i < particleCount; i++) {
+		
+		/*for (let i = 0; i < particleCount; i++) {
 			particles.push({
 				x: Math.random() * canvas.width,
 				y: Math.random() * canvas.height,
@@ -269,11 +275,27 @@
 				radius: Math.random() * 5 + 2,
 				color: colors[Math.floor(Math.random() * colors.length)],
 			});
+		}*/
+		var particleCount = 0;
+		function addParticle() {
+		if (particleCount < 50) {
+			particles.push({
+				x: Math.random() * canvas.width,
+				y: Math.random() * canvas.height,
+				vx: Math.random() * 20 - 10,
+				vy: Math.random() * 20 - 10,
+				radius: Math.random() * 5 + 2,
+				color: colors[Math.floor(Math.random() * colors.length)],
+				start: Date.now(),
+			});
+			particleCount++;
+		}
 		}
 
 		function draw() {
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			particles.forEach(particle => {
+			const currentTime = Date.now();
+			particles.forEach((particle, index) => {
 				particle.x += particle.vx;
 				particle.y += particle.vy;
 				if (particle.x < 0 || particle.x > canvas.width) particle.vx = -particle.vx;
@@ -282,14 +304,19 @@
 				ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
 				ctx.fillStyle = particle.color;
 				ctx.fill();
+				//PARTICLE LIFESPAN
+				if (currentTime - particle.start > 2000) {
+					particles.splice(index, 1);
+				}
 			});
 			requestAnimationFrame(draw);
 		}
+		addParticle();
 		draw();
+		setInterval(addParticle, 1);
 		setTimeout(() => {
-			clearInterval(interval);
 			document.body.removeChild(canvas);
-		}, 2000);
+		}, 3000);
 	}
 
 
