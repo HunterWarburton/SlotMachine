@@ -134,9 +134,36 @@
         }
         return slotMachine;
       }
+	  
+	  const createWinLineRectangle = (num) => {
+		const winLineRect = document.createElement('div');
+        winLineRect.classList.add('winLineRect');
+		winLineRect.innerHTML = num;
+		return winLineRect;
+	  }
+	  
+	  //This is the bars on either side of the reels
+	  //this indicator holds several colored rectangles that number the win-lines
+	  const createWinLineIndicator = () => {
+		  const winLineIndicator = document.createElement('div');
+        winLineIndicator.classList.add('winLineIndicator');
+		//Make individual rectangles with numbers and put them in the indicator
+		for (let i = 0; i < 5; i++) {
+			winLineIndicator.appendChild(createWinLineRectangle(i+1));
+		}
+		return winLineIndicator;
+	  }
+	  
+	  
 
-
-      slotHolder.appendChild(createSlotMachine());
+		//Actually build the slot machine
+		//first make a winline inidicator
+		slotHolder.appendChild(createWinLineIndicator());
+		//then make the slotmachine
+		slotHolder.appendChild(createSlotMachine());
+		//then make a duplicate winline indicator
+		slotHolder.appendChild(createWinLineIndicator());
+		
       
       const playButton = document.getElementById('play-button');
 	  playButton.classList.add('play-button');
