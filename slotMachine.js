@@ -76,6 +76,7 @@
 
 	window.addEventListener("resize", resizeit);
 	
+	
 	function resizeit(){     // the element
 		//If Width is smaller (cellphone) then use the full 100% width and base height on that
 		console.log("window.innerWidth " + window.innerWidth);
@@ -88,8 +89,8 @@
 		//Then full width is controlling size
 		if (wWidth <= wHeight*1.2) {
 			console.log("tiny width");
-			slotHolder.style.width = wWidth + 'px';
-			slotHolder.style.height = wWidth * 5/6 *0.8 + 'px';
+			slotHolder.style.width = wWidth *0.975 + 'px';
+			slotHolder.style.height = wWidth * 5/6 *0.8 *0.975 + 'px';
 		} else {
 		console.log("its widescreen");
 			//If Height is smaller (pc screen) then use full 90% height and base width on that
@@ -126,12 +127,15 @@
         return column;
       }
 
+		//Create the part weth reels
       const createSlotMachine = () => {
         const slotMachine = document.createElement('div');
         slotMachine.classList.add('slot-machine');
+		//Add reels/Columns to the machine
         for (let i = 0; i < 5; i++) {
           slotMachine.appendChild(createColumn(i/2+1));
         }
+		
         return slotMachine;
       }
 	  
@@ -148,7 +152,7 @@
 		  const winLineIndicator = document.createElement('div');
         winLineIndicator.classList.add('winLineIndicator');
 		//Make individual rectangles with numbers and put them in the indicator
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < 15; i++) {
 			winLineIndicator.appendChild(createWinLineRectangle(i+1));
 		}
 		return winLineIndicator;
@@ -163,6 +167,14 @@
 		slotHolder.appendChild(createSlotMachine());
 		//then make a duplicate winline indicator
 		slotHolder.appendChild(createWinLineIndicator());
+		//Add the win-Lines on top/Add the Win-Line png images
+		for (let i = 1; i <= 15; i++) {
+			const winLine = document.createElement('img');
+			winLine.src = `images/WinLines-${i}.png`;
+			//console.log(`images/WinLines-`+i+`.png`);
+			winLine.classList.add('winLine');
+			slotHolder.appendChild(winLine);		
+		}
 		
       
       const playButton = document.getElementById('play-button');
