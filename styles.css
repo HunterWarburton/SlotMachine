@@ -3,8 +3,11 @@
 		text-align: center;
 		display: flex;
 		justify-content: center;
-		
+		position: relative;
 		/*padding: 10px;*/
+		
+		min-height: calc(260px * 5/6 *0.8 *0.975);
+		min-width: calc(0.975*260px);
 		
 		border: 1px dashed;		
 	}
@@ -16,6 +19,8 @@
 		width: 75%;
 		height: calc(100% - 1em);
 		border: 0.5em solid black;
+		border-left: 0.0em solid black;
+		border-right: 0.0em solid black;
 		overflow: hidden;
 		
 	}
@@ -66,7 +71,7 @@
 		/*transition: transform 3.0s cubic-bezier(.76,1.24,.95,1.04);*/
 		transform: translateY(-1800%);
       }
-	  img {
+	  .slot-img {
 	  visibility: visible;
 	  position: relative;
 		
@@ -81,14 +86,36 @@
 	  .winLineIndicator {
 		  display: flex;
 		  flex-direction: column;
-		  justify-content: space-around;
-		  height: 100%;
+		  justify-content: space-between;
+		  height: calc(100%-1em);
 		  width:5%;
+		  border-top: 0.5em solid black;
+		  border-bottom: 0.5em solid black;
+		  border-left: 0.5em solid black;
+		  border-right: 0.5em solid black;
 	  }
 	  .winLineRect {
-
+			overflow: hidden;
 		  background-color: #ffffff;
 		  color: #000000;
-
 		  width: 100%;
+		  height: 5%;
+		  text-align: center;
+		  vertical-align: middle;
+		  padding-top: 25%;
+		  margin: 0;
+		  font-size: 50%;
+	  }
+	  .winLine {
+		 visibility: hidden;
+		position: absolute;
+
+	top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+		width: 100%;
+		height: 100%;
+		left:0px;
 	  }
