@@ -127,7 +127,7 @@
         return column;
       }
 
-		//Create the part weth reels
+		//Create the part with reels
       const createSlotMachine = () => {
         const slotMachine = document.createElement('div');
         slotMachine.classList.add('slot-machine');
@@ -143,6 +143,53 @@
 		const winLineRect = document.createElement('div');
         winLineRect.classList.add('winLineRect');
 		winLineRect.innerHTML = num;
+			switch (num) {
+				case 1:
+					winLineRect.style.backgroundColor = "#00ff00";
+				break;
+				case 2:
+					winLineRect.style.backgroundColor = "#ff00ff";
+				break;
+				case 3:
+					winLineRect.style.backgroundColor = "#ff0000";
+				break;
+				case 4:
+					winLineRect.style.backgroundColor = "#0000ff";
+				break;
+				case 5:
+					winLineRect.style.backgroundColor = "#ffffff";
+				break;
+				case 6:
+					winLineRect.style.backgroundColor = "#00ffff";
+				break;
+				case 7:
+					winLineRect.style.backgroundColor = "#ffff00";
+				break;
+				case 8:
+					winLineRect.style.backgroundColor = "#ffffff";
+				break;
+				case 9:
+					winLineRect.style.backgroundColor = "#ffff00";
+				break;
+				case 10:
+					winLineRect.style.backgroundColor = "#00ffff";
+				break;
+				case 11:
+					winLineRect.style.backgroundColor = "#ffffff";
+				break;
+				case 12:
+					winLineRect.style.backgroundColor = "#0000ff";
+				break;
+				case 13:
+					winLineRect.style.backgroundColor = "#ff0000";
+				break;
+				case 14:
+					winLineRect.style.backgroundColor = "#ff00ff";
+				break;
+				case 15:
+					winLineRect.style.backgroundColor = "#00ff00";
+				break;
+			}
 		return winLineRect;
 	  }
 	  
@@ -151,9 +198,10 @@
 	  const createWinLineIndicator = () => {
 		  const winLineIndicator = document.createElement('div');
         winLineIndicator.classList.add('winLineIndicator');
+		winLineIndicator.style.zIndex = 50;
 		//Make individual rectangles with numbers and put them in the indicator
-		for (let i = 0; i < 15; i++) {
-			winLineIndicator.appendChild(createWinLineRectangle(i+1));
+		for (let i = 1; i <= 15; i++) {
+			winLineIndicator.appendChild(createWinLineRectangle(i));	
 		}
 		return winLineIndicator;
 	  }
@@ -168,17 +216,62 @@
 		//then make a duplicate winline indicator
 		slotHolder.appendChild(createWinLineIndicator());
 		//Add the win-Lines on top/Add the Win-Line png images
+		let winLines = [];
 		for (let i = 1; i <= 15; i++) {
 			const winLine = document.createElement('img');
 			winLine.src = `images/WinLines-${i}.png`;
 			//console.log(`images/WinLines-`+i+`.png`);
 			winLine.classList.add('winLine');
-			slotHolder.appendChild(winLine);		
+			slotHolder.appendChild(winLine);
+			winLine.style.zIndex = 20+i;
+			winLines.push(winLine);
 		}
 		
-      
+		
+	//GAMESTATE
+	//start the game with a fresh player in pre-play state
+    let gameState = 'pre-play';
+	
+	function gameLoop () {
+		switch (gameState) {
+			case 'pre-play':
+				for (let i = 1; i <= 15; i++) {
+					winLines[i-1].style.visibility = 'hidden';
+				}
+			//In this state the winLines should all become visible over time, then all turn off
+				//give each winLine an increasing duration of turning visible
+				for (let i = 1; i <= 15; i++) {
+					
+					setTimeout(() => {
+						winLines[i-1].style.visibility = 'visible';
+					}, 1000*i);//After 1 second * winLine number, turn visible
+				}
+				//Now make them all turn invisible again and start the timer over again
+				setTimeout(() => {
+					for (let i = 1; i <= 15; i++) {
+						winLines[i-1].style.visibility = 'hidden';
+					}
+					gameLoop();
+				}, 17000);
+				
+			break;
+			case 'active':
+			
+			break;
+			case 'post-spin':
+		
+			break;
+		}
+	}
+	gameLoop();//run initial gameLoop
+	//setInterval(gameLoop, 1000/60);//1 second / 60 refreshes
+	  
+	  
+	  
+	  
       const playButton = document.getElementById('play-button');
 	  playButton.classList.add('play-button');
+	  playButton.style.zIndex = 99;
 	  
 	  
 	  //CLICK THE BUTTON
@@ -203,8 +296,8 @@
 		}, 3000);//3 seconds
 
 		
-		topandBottomRowColor();
-		checkThreeOfAKind();
+		topandBottomRowColor();//Color some symbols
+		checkSecondRow();
 		doTheConfetti();
 });
 //END BUTTON
@@ -228,7 +321,7 @@
 	}
 	
 	
-	const checkThreeOfAKind = () => {
+	const checkSecondRow = () => {
   const secondSymbols = document.querySelectorAll('.column > .symbol:nth-child(3)');
   const counts = {};
   for (const symbol of secondSymbols) {
@@ -315,10 +408,4 @@
 		setTimeout(() => {
 			document.body.removeChild(canvas);
 		}, 3000);
-	}
-
-
-
-
-
-      
+	}//END  CONFETTI
