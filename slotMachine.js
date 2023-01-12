@@ -9,7 +9,7 @@
 	  theSymbol = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
 	  */
 	  //Generate a num between 1 and 100
-	  const Shmango =	15; //'O', 	15%
+	  const Shmango =	60; //'O', 	15%
 	  const Bar =		10; //'R',  10%
 	  const Matcha =	8; //'M',  	8%
 	  const Ati =		10; //'A', 	10%
@@ -104,10 +104,11 @@
 		//make the symbols that make up a column
       const createColumn = (time) => {
         const column = document.createElement('div');
+		var columnArray = [];
         column.classList.add('column');
         for (let i = 0; i < 30+(time*2); i++) {
           const symbol = document.createElement('div');
-		  symbolsList.push(symbol);
+		  columnArray.push(symbol);
           symbol.id = getRandomSymbol();
           symbol.classList.add('symbol');
 		  
@@ -120,10 +121,11 @@
 		  //console.log(time);
 		  //Make the animation of each column's symbol progressively slower
 		  symbol.style.transition = `transform ${time}s cubic-bezier(.76,1.24,.95,1.04)`;
-          symbol.style.transform = `translateY(-${time*400+1800}%)`; 
+          symbol.style.transform = `translateY(-${(time)*400+1800}%)`; 
 		  
 		  column.appendChild(symbol);
         }
+		symbolsList.push(columnArray);
         return column;
       }
 
@@ -143,6 +145,7 @@
 		const winLineRect = document.createElement('div');
         winLineRect.classList.add('winLineRect');
 		winLineRect.innerHTML = num;
+			//Color the rectangles to match the lines
 			switch (num) {
 				case 1:
 					winLineRect.style.backgroundColor = "#00ff00";
@@ -215,8 +218,10 @@
 		slotHolder.appendChild(createSlotMachine());
 		//then make a duplicate winline indicator
 		slotHolder.appendChild(createWinLineIndicator());
-		//Add the win-Lines on top/Add the Win-Line png images
+		//Add the win-Lines IMAGES on top/Add the Win-Line png images
 		let winLines = [];
+		let winnerLines = [];
+		var winLinesTimers = [];//will hold setTimeout variables
 		for (let i = 1; i <= 15; i++) {
 			const winLine = document.createElement('img');
 			winLine.src = `images/WinLines-${i}.png`;
@@ -231,8 +236,13 @@
 	//GAMESTATE
 	//start the game with a fresh player in pre-play state
     let gameState = 'pre-play';
+	var overLineTimer;
+	
+	//we make Timeouts to time how long to make winLines visible
+	//if those Timeouts are stored in a variable, we can clear them and start fresh when a gamestate changes
 	
 	function gameLoop () {
+		clearTimers();
 		switch (gameState) {
 			case 'pre-play':
 				for (let i = 1; i <= 15; i++) {
@@ -241,24 +251,45 @@
 			//In this state the winLines should all become visible over time, then all turn off
 				//give each winLine an increasing duration of turning visible
 				for (let i = 1; i <= 15; i++) {
-					
-					setTimeout(() => {
+					 
+					prePlayFlashTimer = setTimeout(() => {
 						winLines[i-1].style.visibility = 'visible';
-					}, 1000*i);//After 1 second * winLine number, turn visible
+					}, (500*i)+1000);//After 1 second * winLine number, turn visible
+					winLinesTimers[i-1] = (prePlayFlashTimer);
 				}
 				//Now make them all turn invisible again and start the timer over again
-				setTimeout(() => {
+				overLineTimer = setTimeout(() => {
 					for (let i = 1; i <= 15; i++) {
 						winLines[i-1].style.visibility = 'hidden';
 					}
 					gameLoop();
-				}, 17000);
+				}, 10000);
 				
 			break;
 			case 'active':
-			
+				//this represents right after the play button is pressed, while the reels are spinning
+				clearTimers();
+				//make lines go behind slotSymbols
+				for (let i = 1; i <= 15; i++) {
+					winLines[i-1].style.visibility = 'visible';
+					winLines[i-1].style.zIndex = '9';
+					winLines[i-1].style.filter = 'saturate(50%) brightness(50%)';
+				}
+				
 			break;
 			case 'post-spin':
+				clearTimers();
+				for (let i = 1; i <= 15; i++) {
+					winLines[i-1].style.visibility = 'visible';
+					winLines[i-1].style.zIndex = '9';
+					winLines[i-1].style.filter = 'saturate(25%) brightness(25%)';
+				}
+			//Here are the timers to rotate through matching lines
+				for (let i = 0; i < winnerLines.length; i++) {
+					winLines[i].style.visibility = 'visible';
+					winLines[i].style.zIndex = '10';
+					winLines[i].style.filter = 'saturate(100%) brightness(100%)';
+				}
 		
 			break;
 		}
@@ -266,7 +297,12 @@
 	gameLoop();//run initial gameLoop
 	//setInterval(gameLoop, 1000/60);//1 second / 60 refreshes
 	  
-	  
+		function clearTimers() {
+			for (let foo = 0; foo < clearTimeout.length; foo++) {
+				clearTimeout(winLinesTimers[foo]);
+			}
+			clearTimeout(overLineTimer);
+		}
 	  
 	  
       const playButton = document.getElementById('play-button');
@@ -276,6 +312,9 @@
 	  
 	  //CLICK THE BUTTON
 	playButton.addEventListener('click', () => {
+		gameState = 'active';
+		winnerLines = [];
+		gameLoop();
 		symbolsList.length = [];
 		const slotMachine = document.querySelector('.slot-machine');
 		slotMachine.innerHTML = '';
@@ -293,11 +332,14 @@
 		playButton.disabled = true;
 		setTimeout(() => {
 			playButton.disabled = false;
+			//Call new gameLoop
+			gameState = 'post-spin';
+			gameLoop();
 		}, 3000);//3 seconds
 
 		
-		topandBottomRowColor();//Color some symbols
-		checkSecondRow();
+		//topandBottomRowColor();//Color some symbols
+		doTheCounts();
 		doTheConfetti();
 });
 //END BUTTON
@@ -320,24 +362,72 @@
 		
 	}
 	
+		//CHECK FOR WINNER
+		//first define the symbols that are in each win line
+	const doTheCounts = () => {
+		
+		//for all 15 win lines, check the 5 symbols for # count
+		let fiveSymbolsToCount = [];
+		//Line 1
+		fiveSymbolsToCount.push(symbolsList[0][1]);
+		fiveSymbolsToCount.push(symbolsList[1][1]);
+		fiveSymbolsToCount.push(symbolsList[2][2]);
+		fiveSymbolsToCount.push(symbolsList[3][1]);
+		fiveSymbolsToCount.push(symbolsList[4][1]);
+		countThisLine(fiveSymbolsToCount, 1);
+		
+		//Line 2
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][1]);
+		fiveSymbolsToCount.push(symbolsList[1][2]);
+		fiveSymbolsToCount.push(symbolsList[2][3]);
+		fiveSymbolsToCount.push(symbolsList[3][4]);
+		fiveSymbolsToCount.push(symbolsList[4][5]);
+		countThisLine(fiveSymbolsToCount, 2);
+	}
 	
-	const checkSecondRow = () => {
-  const secondSymbols = document.querySelectorAll('.column > .symbol:nth-child(3)');
-  const counts = {};
-  for (const symbol of secondSymbols) {
-    if (counts[symbol.innerHTML]) {
-      counts[symbol.innerHTML]++;
-    } else {
-      counts[symbol.innerHTML] = 1;
-    }
-  }
-  const symbolCount = document.querySelector('.symbol-count');
-  let text = 'Second Row -';
-  for (const [symbol, count] of Object.entries(counts)) {
-    text += ` ${symbol}: ${count}`;
-  }
-  symbolCount.innerHTML = text;
-}
+let text = "";
+	function countThisLine (thisLine, thisNum) {
+		//First just add up the symbol counts per line
+		const counts = {};
+		let winner = {};
+		winner.flag = false;
+		for (const symbol of thisLine) {
+			if (counts[symbol.innerHTML]) {
+				counts[symbol.innerHTML]++;
+				if (counts[symbol.innerHTML] > 2) {
+					winner.flag = true;
+					winner.innerHTML = symbol.innerHTML;
+					
+					}
+			} else {
+				counts[symbol.innerHTML] = 1;
+			}
+		}
+		
+		
+		
+		text += `\n <br> Win Line ${thisNum} -`;
+		for (const [symbol, count] of Object.entries(counts)) {
+			text += ` ${symbol}: ${count}`;
+		}
+		
+		//Highlight the Symbols that match
+		if (winner.flag) {
+			for (const symbol of thisLine) {
+				if (symbol.innerHTML == winner.innerHTML) {
+						symbol.style.filter = 'hue-rotate(180deg)';
+				}
+			}
+			text += ` WINNER`;
+			
+			//Highlight winLine
+			winnerLines.push(winLines[thisNum]);
+			
+		}
+		const symbolCount = document.querySelector('.symbol-count');
+		symbolCount.innerHTML = text;
+	}
 
 	
 	function doTheConfetti() {
