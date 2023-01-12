@@ -46,10 +46,11 @@
 		padding-right: 1%;
 		
 		overflow: hidden;
+		z-index: 10;
       }
       .column:first-child,
       .column:last-child {
-        background-color: #ddd;
+        background-color: transparent;
       }
 	  
 	  .column > div:nth-child(2),
@@ -81,6 +82,11 @@
 		height: 100%;
 		left:0px;
 		
+	  }
+	  
+	  .symbol-count img{
+		  max-height: 20px;
+		  max-width: 20px;
 	  }
 	  
 	  .winLineIndicator {
