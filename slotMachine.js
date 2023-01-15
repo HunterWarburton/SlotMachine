@@ -9,7 +9,7 @@
 	  theSymbol = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
 	  */
 	  //Generate a num between 1 and 100
-	  const Shmango =	60; //'O', 	15%
+	  const Shmango =	15; //'O', 	15%
 	  const Bar =		10; //'R',  10%
 	  const Matcha =	8; //'M',  	8%
 	  const Ati =		10; //'A', 	10%
@@ -286,9 +286,10 @@
 				}
 			//Here are the timers to rotate through matching lines
 				for (let i = 0; i < winnerLines.length; i++) {
-					winLines[i].style.visibility = 'visible';
-					winLines[i].style.zIndex = '10';
-					winLines[i].style.filter = 'saturate(100%) brightness(100%)';
+					console.log(winnerLines);
+					winnerLines[i].style.visibility = 'visible';
+					winnerLines[i].style.zIndex = '10';
+					winnerLines[i].style.filter = 'saturate(100%) brightness(100%)';
 				}
 		
 			break;
@@ -384,6 +385,33 @@
 		fiveSymbolsToCount.push(symbolsList[3][4]);
 		fiveSymbolsToCount.push(symbolsList[4][5]);
 		countThisLine(fiveSymbolsToCount, 2);
+		
+		//Line 3
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][1]);
+		fiveSymbolsToCount.push(symbolsList[1][2]);
+		fiveSymbolsToCount.push(symbolsList[2][2]);
+		fiveSymbolsToCount.push(symbolsList[3][2]);
+		fiveSymbolsToCount.push(symbolsList[4][1]);
+		countThisLine(fiveSymbolsToCount, 3);
+		
+		//Line 4
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][2]);
+		fiveSymbolsToCount.push(symbolsList[1][1]);
+		fiveSymbolsToCount.push(symbolsList[2][1]);
+		fiveSymbolsToCount.push(symbolsList[3][1]);
+		fiveSymbolsToCount.push(symbolsList[4][2]);
+		countThisLine(fiveSymbolsToCount, 4);
+		
+		//Line 5
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][2]);
+		fiveSymbolsToCount.push(symbolsList[1][2]);
+		fiveSymbolsToCount.push(symbolsList[2][2]);
+		fiveSymbolsToCount.push(symbolsList[3][2]);
+		fiveSymbolsToCount.push(symbolsList[4][2]);
+		countThisLine(fiveSymbolsToCount, 5);
 	}
 	
 let text = "";
@@ -422,7 +450,7 @@ let text = "";
 			text += ` WINNER`;
 			
 			//Highlight winLine
-			winnerLines.push(winLines[thisNum]);
+			winnerLines.push(winLines[thisNum-1]);
 			
 		}
 		const symbolCount = document.querySelector('.symbol-count');
