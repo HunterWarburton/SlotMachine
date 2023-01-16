@@ -412,6 +412,51 @@
 		fiveSymbolsToCount.push(symbolsList[3][2]);
 		fiveSymbolsToCount.push(symbolsList[4][2]);
 		countThisLine(fiveSymbolsToCount, 5);
+		
+		//Line 6
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][2]);
+		fiveSymbolsToCount.push(symbolsList[1][3]);
+		fiveSymbolsToCount.push(symbolsList[2][3]);
+		fiveSymbolsToCount.push(symbolsList[3][3]);
+		fiveSymbolsToCount.push(symbolsList[4][2]);
+		countThisLine(fiveSymbolsToCount, 6);
+		
+		//Line 7
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][3]);
+		fiveSymbolsToCount.push(symbolsList[1][2]);
+		fiveSymbolsToCount.push(symbolsList[2][1]);
+		fiveSymbolsToCount.push(symbolsList[3][2]);
+		fiveSymbolsToCount.push(symbolsList[4][3]);
+		countThisLine(fiveSymbolsToCount, 5);
+		
+		//Line 8
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][3]);
+		fiveSymbolsToCount.push(symbolsList[1][3]);
+		fiveSymbolsToCount.push(symbolsList[2][3]);
+		fiveSymbolsToCount.push(symbolsList[3][3]);
+		fiveSymbolsToCount.push(symbolsList[4][3]);
+		countThisLine(fiveSymbolsToCount, 8);
+		
+		//Line 9
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][3]);
+		fiveSymbolsToCount.push(symbolsList[1][4]);
+		fiveSymbolsToCount.push(symbolsList[2][5]);
+		fiveSymbolsToCount.push(symbolsList[3][4]);
+		fiveSymbolsToCount.push(symbolsList[4][3]);
+		countThisLine(fiveSymbolsToCount, 9);
+		
+		//Line 10
+		fiveSymbolsToCount = [];
+		fiveSymbolsToCount.push(symbolsList[0][4]);
+		fiveSymbolsToCount.push(symbolsList[1][3]);
+		fiveSymbolsToCount.push(symbolsList[2][3]);
+		fiveSymbolsToCount.push(symbolsList[3][3]);
+		fiveSymbolsToCount.push(symbolsList[4][4]);
+		countThisLine(fiveSymbolsToCount, 10);
 	}
 	
 let text = "";
